@@ -1,0 +1,10 @@
+<meta property="og:type" content="article" />
+<meta property="og:article:published_time" content="{{ page.date }}" />
+<meta property="og:article:author" content="Chris Klug" />
+<meta property="og:title" content="{{ page.title }}" />
+<meta property="og:description" content="{% if page.excerpt %}{{page.excerpt | strip_html | normalize_whitespace | truncate: 320 | escape}}{% else %}{{ page.content | strip_html | truncatewords: 33, "" }}{% endif %}" />
+<meta property="og:image" content="{{ site.url }}{{ page.cover }}" />
+<meta property="og:url" content="{{ site.url }}{{ page.url }}" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image:alt" content="{{ page.title }}" />
+<meta name="twitter:site" content="@{{ site.twitter }}" />

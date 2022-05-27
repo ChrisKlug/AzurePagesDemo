@@ -1,0 +1,10 @@
+{% for author in site.data.authors %}
+    {% if author[1].username == include.author %}
+        {% if author[1].picture %}
+        <img class="author-profile-image" src="/{{ author[1].picture }}" alt="{{ author[1].name }}" />
+        {% endif %}
+        <span class="post-card-author">
+            {{ author[1].name }}
+        </span>
+    {% endif %}
+{% endfor %}

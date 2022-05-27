@@ -1,0 +1,88 @@
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely edit after that. If you find
+# yourself editing this file very often, consider using Jekyll's data files
+# feature for the data you need to update frequently.
+#
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
+
+# Site settings
+# These are used to personalize your new site. If you look in the HTML files,
+# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
+# You can create any custom variable you would like, and they will be accessible
+# in the templates via {{ site.myvariable }}.
+
+# Jekyll configuration
+markdown: kramdown
+highlighter: rouge
+paginate: 20 # it will paginate after this number
+language: 'en-us'
+words_per_minute: 200
+
+# Website info
+title: Fear of Oblivion
+email: chris@59north.com
+description: >- # this means to ignore newlines until "baseurl:"
+  A blog containing the thoughts and ideas of me
+baseurl: / # the subpath of your site, e.g. /blog
+url: "https://www.fearofoblivion.com" # the base hostname & protocol for your site, e.g. http://example.com
+twitter_username: zerokoll
+github_username:  chrisklug
+cover: /assets/images/blog-cover.jpg
+logo: /assets/images/FearOfOblivion.png
+logo_dark: /assets/images/favicon.png
+favicon: /assets/images/favicon.png
+production_url: https://www.fearofoblivion.com
+source_url: https://github.com/chrisklug/chrisklug.github.io/
+CNAME: #add cname for website to be created
+
+# Social info
+navigation: True # show the navbar links
+subscribers: False # you need to connect an external service for this to work,
+# if 'True' the submit button is disabled for now, but you can change that
+# by editing `_includes/subscribe-form.html`
+twitter: zerokoll # replace by your username
+facebook:  # replace by your username
+
+# Disqus
+disqus: False
+disqus_shortname:  # replace with your disqus username
+
+# Google Analytics
+google_analytics:  G-91CY9T0N4E # replace with your GA tracking identifier
+
+# Permalinks
+permalink: /:title.html
+
+# Authors' info in `_data/authors.yml`
+
+# gems and other configs
+plugins_dir: [_plugins]
+plugins: [jekyll-paginate, jekyll-feed, jekyll-sitemap]
+
+feed:
+  path: feed.xml
+
+# Additional settings available on the front-matter
+# Site logo in the index.html (as in demo.ghost.io)
+# Author's page cover in _layouts/author.html
+# The same for page.html and tag.html layouts
+# Post's page cover as a per-post basis _posts/...
+# Disqus comments as a per-post basis
+# ...
+
+
+exclude:
+  - assets/css
+  - node_modules
+  - Gemfile
+  - Gemfile.lock
+  - gulpfile.js
+  - LICENSE
+  - package.json
+  - README.md
+  - script.py
+  - .git*
+

@@ -1,0 +1,17 @@
+{% for author in site.data.authors %}
+    {% if author[1].username == include.author %}
+        <section class="author-card">
+            {% if author[1].picture %}
+                <img class="author-profile-image" src="/{{ author[1].picture }}" alt="{{ include.author }}" />
+            {% endif %}
+            <section class="author-card-content">
+                <h4 class="author-card-name"><a>{{ author[1].name }}</a></h4>
+                {% if author[1].bio %}
+                    <p>{{ author[1].bio }}</p>
+                {% endif %}
+            </section>
+        </section>
+        <div class="post-full-footer-right">
+        </div>
+    {% endif %}
+{% endfor %}

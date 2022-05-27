@@ -1,0 +1,9 @@
+{% if content.tags.size > 0 %}
+    {% for tag in content.tags %}
+        {% if forloop.index == content.tags.size %}
+            <span class="post-card-tags">{{ tag | capitalize }}</span>
+        {% else %}
+            <span class="post-card-tags">{{ tag | capitalize }}</span>
+        {% endif %}
+    {% endfor %}
+{% endif %}
