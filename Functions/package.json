@@ -1,0 +1,7 @@
+{
+    "name": "azure-pages-demo",
+    "version": "0.1.0",
+    "dependencies": {
+        "azure-storage": "^2.10.7"
+    }
+}
