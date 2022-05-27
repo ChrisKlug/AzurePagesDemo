@@ -1,0 +1,73 @@
+trigger:
+- master
+
+variables:
+  ProjectName: 'azurepagesdemo'
+
+stages:
+    - stage: build
+      displayName: "Generate website"
+      jobs:
+      - job: runJekyll
+        displayName: "Run Jekyll container"
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - script: docker run -v "$(Build.SourcesDirectory)/Site:/srv/jekyll/source" -v "$(Build.ArtifactStagingDirectory):/srv/jekyll/destination" -e JEKYLL_ROOTLESS=true jekyll/jekyll jekyll build --source /srv/jekyll/source --destination /srv/jekyll/destination
+            displayName: "Run Jekyll"
+          
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish generated site'
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'site'
+              publishLocation: 'Container'
+
+    - stage: releaseToStaging
+      displayName: "Deploy site to staging"
+      jobs:
+      - deployment: deployToStaging
+        displayName: "Deploy to staging"
+        pool:
+          vmImage: 'windows-latest'
+        environment: 'Staging'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureFileCopy@3
+                  displayName: 'Publish Site'
+                  inputs:
+                    SourcePath: '$(Pipeline.Workspace)/site'
+                    azureSubscription: 'AzurePagesDemo'
+                    Destination: AzureBlob
+                    storage: '$(ProjectName)staging'
+                    ContainerName: '$web'
+
+    - stage: releaseToProduction
+      displayName: "Deploy site to production"
+      jobs:
+      - deployment: deployToProduction
+        displayName: "Deploy to production"
+        pool:
+          vmImage: 'windows-latest'
+        environment: 'Production'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - task: AzureFileCopy@3
+                displayName: 'Publish Site'
+                inputs:
+                  SourcePath: '$(Pipeline.Workspace)/site'
+                  azureSubscription: 'AzurePagesDemo'
+                  Destination: AzureBlob
+                  storage: '$(ProjectName)'
+                  ContainerName: '$web'
+      
+              - task: AzureCLI@1
+                displayName: 'Purge CDN'
+                inputs:
+                  azureSubscription: 'AzurePagesDemo'
+                  scriptLocation: inlineScript
+                  inlineScript: 'az cdn endpoint purge -g AzurePagesDemo -n azurepagesdemo --profile-name AzurePagesDemo --content-paths /*'
