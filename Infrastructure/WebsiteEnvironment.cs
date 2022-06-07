@@ -129,9 +129,9 @@ namespace Infrastructure
 
             // Required as Custom Domain cannot be removed while CNAME is in place.
             // Warning: Does not work all the time, as DNS records are cached unfortunately
-            // Warning: Only works on Windows! Replace "powershell Start-Sleep 40" with corresponding *nix command for Linux or Mac
+            // Warning: Only works on Windows! Replace "&& powershell Start-Sleep 40" with corresponding *nix command for Linux or Mac
             new Pulumi.Command.Local.Command(name + "-CnameRemoval", new Pulumi.Command.Local.CommandArgs {
-                Delete = cnameRecord.Name.Apply(name => $"az network dns record-set cname remove-record -g DNS -z zerokoll.com -n {name} -c \"-\"; powershell Start-Sleep 40")
+                Delete = cnameRecord.Name.Apply(name => $"az network dns record-set cname remove-record -g DNS -z zerokoll.com -n {name} -c \"-\" && powershell Start-Sleep 40")
             }, new CustomResourceOptions { Parent = cnameRecord, DependsOn = new [] { customDomain } });
             
             Url = cnameRecord.Fqdn.Apply(x => $"https://{x.Substring(0, x.Length - 1)}/");
