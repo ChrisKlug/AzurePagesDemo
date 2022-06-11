@@ -232,18 +232,18 @@
 		],
 		"description": "Set AzCdnPurgeCommand"
 	},
-	"Add MyStack outputs": {
+	"Add Program outputs": {
 		"scope": "csharp",
 		"prefix": "APD_12",
 		"body": [
-			"[Output]",
-			"public Output<string> StagingUrl { get; set; }",
-			"[Output]",
-			"public Output<string> ProductionUrl { get; set; }",
-			"[Output]",
-			"public Output<string> AzProductionCdnPurgeCommand { get; set; }",
+			"return new Dictionary<string, object?>",
+			"{",
+			"    [\"StagingUrl\"] = stagingEnvironment.Url,",
+			"    [\"ProductionUrl\"] = prodEnvironment.Url,",
+			"    [\"AzProductionCdnPurgeCommand\"] = prodEnvironment.AzCdnPurgeCommand",
+			"};",
 		],
-		"description": "Add MyStack outputs"
+		"description": "Add outputs"
 	},
 	"Add Azure pipeline outline": {
 		"scope": "yaml",
@@ -422,7 +422,7 @@
 		"scope": "csharp",
 		"prefix": "APD_16",
 		"body": [
-			"private Output<string> GetStorageConnectionString(ResourceGroup resourceGroup, Pulumi.AzureNative.Storage.StorageAccount account)",
+			"Output<string> GetStorageConnectionString(ResourceGroup resourceGroup, Pulumi.AzureNative.Storage.StorageAccount account)",
 			"{",
 			"    var primaryStorageKey = Output.Tuple(resourceGroup.Name, account.Name).Apply(",
 			"            x => Output.Create(Pulumi.AzureNative.Storage.ListStorageAccountKeys.InvokeAsync(",
@@ -444,7 +444,7 @@
 		"scope": "csharp",
 		"prefix": "APD_17",
 		"body": [
-			"private Output<string> GetCodeBlobUrl(ResourceGroup resourceGroup, Pulumi.AzureNative.Storage.StorageAccount account, Pulumi.AzureNative.Storage.BlobContainer container, Pulumi.AzureNative.Storage.Blob blob)",
+			"Output<string> GetCodeBlobUrl(ResourceGroup resourceGroup, Pulumi.AzureNative.Storage.StorageAccount account, Pulumi.AzureNative.Storage.BlobContainer container, Pulumi.AzureNative.Storage.Blob blob)",
 			"{",
 			"    var blobSASServiceSasToken = Output.Tuple(resourceGroup.Name, account.Name, container.Name)",
 			"            .Apply(x => Output.Create(Pulumi.AzureNative.Storage.ListStorageAccountServiceSAS.InvokeAsync(",
@@ -505,7 +505,7 @@
 			"        Http20Enabled = true,",
 			"        NodeVersion = \"~14\",",
 			"        Cors = new Pulumi.AzureNative.Web.Inputs.CorsSettingsArgs {",
-			"            AllowedOrigins = new[] { StagingUrl.Apply(x => x.TrimEnd('/')), ProductionUrl.Apply(x => x.TrimEnd('/')) }",
+			"            AllowedOrigins = new[] { stagingEnvironment.Url.Apply(x => x.TrimEnd('/')), prodEnvironment.Url.Apply(x => x.TrimEnd('/')) }
 			"        }",
 			"    },",
 			"}, new CustomResourceOptions { Parent = functionsPlan });",
