@@ -73,10 +73,10 @@
 		"body": [
 			"var stagingEnvironment = new Infrastructure.WebsiteEnvironment(Pulumi.Deployment.Instance.ProjectName + \"-Staging\", new Infrastructure.WebsiteEnvironmentArgs {",
 			"    ResourceGroupName = resourceGroup.Name",
-			"});",
+			"}, new ComponentResourceOptions { Parent = resourceGroup });",
 			"var prodEnvironment = new Infrastructure.WebsiteEnvironment(Pulumi.Deployment.Instance.ProjectName, new Infrastructure.WebsiteEnvironmentArgs {",
 			"    ResourceGroupName = resourceGroup.Name",
-			"});",
+			"}, new ComponentResourceOptions { Parent = resourceGroup });",
 			"$0"
 		],
 		"description": "Create website environments"
